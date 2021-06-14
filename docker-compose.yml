@@ -1,0 +1,94 @@
+version: "3.7"
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  mariadb:
+    driver: local
+
+services:
+
+### MariaDB ##############################################
+  mariadb:
+    image: mariadb:10.6
+    restart: always
+    volumes:
+      - mariadb:/var/lib/mysql
+    ports:
+      - "${MARIADB_PORT}:3306"
+    environment:
+      - MYSQL_DATABASE=${MARIADB_DATABASE}
+      - MYSQL_USER=${MARIADB_USER}
+      - MYSQL_PASSWORD=${MARIADB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    networks:
+      - backend
+
+### app ################################################
+  app:
+    build: .docker/app
+    restart: always
+    volumes:
+      - ${CODE}:/var/www/
+    depends_on:
+      - mariadb
+    environment:
+      - MYSQL_USER=${MARIADB_USER}
+      - MYSQL_PASSWORD=${MARIADB_PASSWORD}
+      - MYSQL_DATABASE=${MARIADB_DATABASE}
+      - COMPOSER_MEMORY_LIMIT=-1
+    networks:
+      - backend
+
+### nginx ################################################
+  nginx:
+    image: nginx:1.13-alpine
+    restart: always
+    environment:
+      - NGINX_HOST=${NGINX_HOST}
+    volumes:
+      - ${CODE}/public:/var/www/public
+      - ./.docker/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template
+      # Remove the comment below to enable nginx logs to disk.
+      #- ./logs/nginx/:/var/log/nginx/
+    ports:
+      - "${NGINX_HTTP}:80"
+      - "${NGINX_HTTPS}:443"
+    depends_on:
+      - app
+    command: /bin/sh -c "envsubst '${NGINX_HOST}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
+    networks:
+      - backend
+      - frontend
+
+### cron ################################################
+  cron:
+    build: .docker/cron
+    restart: always
+    volumes:
+      - ${CODE}:/var/www
+    depends_on:
+      - app
+      - mariadb
+    networks:
+      - backend
+
+  ### websocket ################################################
+  websocket:
+    build: .docker/cron
+    restart: always
+    volumes:
+      - ${CODE}:/var/www
+    ports:
+      - 6001:6001
+    depends_on:
+      - app
+      - mariadb
+    environment:
+      CONTAINER_ROLE: websocket
+    networks:
+      - backend
