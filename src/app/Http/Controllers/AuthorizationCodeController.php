@@ -16,11 +16,6 @@ class AuthorizationCodeController
 {
     public function request(Request $request)
     {
-        //dd($request['client_id']);
-        /**/
-
-        //dd(data_get($request, 'client_id'));
-
 
         $client = Client::firstWhere('client_id', data_get($request, 'client_id'));
 
@@ -29,7 +24,7 @@ class AuthorizationCodeController
         return inertia('AuthorizeClient', [
             'client_name' => $client->name,
             'client_id' => $client->client_id,
-            'state' => data_get($request, 'client_id'),
+            'state' => data_get($request, 'state'),
             'scopes' => explode(' ', data_get($request, 'scope')),
         ]);
 
@@ -59,7 +54,7 @@ class AuthorizationCodeController
             'state' => data_get($validated_data, 'state')
         ];
 
-        $redirect_url = sprintf('%s?%s', $client->return_url, http_build_query($redirect_data));
+        $redirect_url = sprintf('%s?%s', $client->callback_url, http_build_query($redirect_data));
 
         broadcast(new AuthorizationGranted($client->client_id, array_merge(['method' => 'GET', 'url' => $redirect_url], $redirect_data)));
 

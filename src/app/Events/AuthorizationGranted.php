@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -21,6 +22,8 @@ class AuthorizationGranted implements ShouldBroadcastNow
     public array $redirect_data;
     private int $client_id;
 
+    public Carbon $id;
+
     /**
      * Create a new event instance.
      *
@@ -31,6 +34,7 @@ class AuthorizationGranted implements ShouldBroadcastNow
         //
         $this->redirect_data = $redirect_data;
         $this->client_id = $client_id;
+        $this->id = now();
     }
 
     /**
