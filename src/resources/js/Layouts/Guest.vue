@@ -4,10 +4,10 @@
       <Popover class="relative bg-white">
         <div class="flex justify-between items-center max-w-7xl mx-auto px-4 py-6 sm:px-6 md:justify-start md:space-x-10 lg:px-8">
           <div class="flex justify-start lg:w-0 lg:flex-1">
-            <a href="#">
+            <inertia-link :href="route('home')">
               <span class="sr-only">Workflow</span>
               <img class="h-8 w-auto sm:h-10" src="https://tailwindui.com/img/logos/workflow-mark-purple-600-to-indigo-600.svg" alt="" />
-            </a>
+            </inertia-link>
           </div>
           <div class="-mr-2 -my-2 md:hidden">
             <PopoverButton class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -16,22 +16,22 @@
             </PopoverButton>
           </div>
           <nav class="hidden md:flex space-x-10">
-            <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">
-              Pricing
-            </a>
-            <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">
-              Partners
-            </a>
-            <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900">
-              Company
-            </a>
+            <inertia-link :href="route('register.client')" class="text-base font-medium text-gray-500 hover:text-gray-900">
+              Register Application
+            </inertia-link>
+            <inertia-link :href="route('dashboard')" class="text-base font-medium text-gray-500 hover:text-gray-900">
+              Watch Application
+            </inertia-link>
           </nav>
           <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-            <inertia-link :href="route('login')" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
+            <inertia-link v-if="!user" :href="route('login')" class="whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900">
               Sign in
             </inertia-link>
-            <inertia-link :href="route('register')" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+            <inertia-link v-if="!user" :href="route('register')" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
               Sign up
+            </inertia-link>
+            <inertia-link v-if="user" method="post" :href="route('logout')" class="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+              Logout
             </inertia-link>
           </div>
         </div>
@@ -54,26 +54,26 @@
               </div>
               <div class="py-6 px-5">
                 <div class="grid grid-cols-2 gap-4">
-                  <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                    Application Registration
-                  </a>
-<!--                  <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                    Partners
-                  </a>
-                  <a href="#" class="text-base font-medium text-gray-900 hover:text-gray-700">
-                    Company
-                  </a>-->
+                  <inertia-link :href="route('register.client')" class="text-base font-medium text-gray-900 hover:text-gray-700">
+                    Register Application
+                  </inertia-link>
+                  <inertia-link :href="route('dashboard')" class="text-base font-medium text-gray-900 hover:text-gray-700">
+                    Watch Application
+                  </inertia-link>
                 </div>
                 <div class="mt-6">
-                  <inertia-link :href="route('register')" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+                  <inertia-link v-if="!user" :href="route('register')" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
                     Sign up
                   </inertia-link>
-                  <p class="mt-6 text-center text-base font-medium text-gray-500">
+                  <p v-if="!user" class="mt-6 text-center text-base font-medium text-gray-500">
                     Existing customer?
                     <inertia-link :href="route('login')" class="text-gray-900">
                       Sign in
                     </inertia-link>
                   </p>
+                  <inertia-link v-if="user" method="post" :href="route('logout')" class="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+                    Logout
+                  </inertia-link>
                 </div>
               </div>
             </div>
@@ -110,7 +110,7 @@
 
 <script>
 
-import {defineComponent, h} from "vue";
+import {computed, defineComponent, h} from "vue";
 
 const social = [
     {
@@ -132,6 +132,7 @@ const social = [
 
     import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
     import {MenuIcon, XIcon} from "@heroicons/vue/outline/esm";
+import {usePage} from "@inertiajs/inertia-vue3";
 
     export default {
         components: {
@@ -142,8 +143,12 @@ const social = [
             XIcon
         },
         setup() {
+
+            const user = computed(() => usePage().props.value.auth.user)
+
             return {
-                social
+                social,
+                user
             }
         }
     }

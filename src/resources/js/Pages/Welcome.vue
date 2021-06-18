@@ -29,7 +29,10 @@
         </div>
         <div class="mt-12 sm:mt-16 lg:mt-0">
           <div class="pl-4 -mr-48 sm:pl-6 md:-mr-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
-            <img class="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none" :src="register_application" alt="Inbox user interface" />
+            <img
+                    class="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:left-0 lg:h-full lg:w-auto lg:max-w-none"
+                    :src="register_application"
+                    alt="Inbox user interface" />
           </div>
         </div>
       </div>
@@ -45,22 +48,26 @@
             </div>
             <div class="mt-6">
               <h2 class="text-3xl font-extrabold tracking-tight text-gray-900">
-                Better understand your customers
+                No backend needed
               </h2>
               <p class="mt-4 text-lg text-gray-500">
-                Semper curabitur ullamcorper posuere nunc sed. Ornare iaculis bibendum malesuada faucibus lacinia porttitor. Pulvinar laoreet sagittis viverra duis. In venenatis sem arcu pretium pharetra at. Lectus viverra dui tellus ornare pharetra.
+                The authorized user is usually redirected back back to the application specified <code class="text-purple-600">redirect_url</code> containing a code which is required to acquire the access token via the <b>backchannel</b> authorization grant. This application will receive said callback for you so you'll be able to use the code with your curl.
               </p>
               <div class="mt-6">
-                <a href="#" class="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-                  Get started
-                </a>
+                <inertia-link :href="route('login')" class="inline-flex px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+                  Login
+                </inertia-link>
               </div>
             </div>
           </div>
         </div>
         <div class="mt-12 sm:mt-16 lg:mt-0 lg:col-start-1">
           <div class="pr-4 -ml-48 sm:pr-6 md:-ml-16 lg:px-0 lg:m-0 lg:relative lg:h-full">
-            <img class="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none" src="https://tailwindui.com/img/component-images/inbox-app-screenshot-2.jpg" alt="Customer profile user interface" />
+            <img
+                    v-if="view_appliaction"
+                    class="w-full rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 lg:absolute lg:right-0 lg:h-full lg:w-auto lg:max-w-none"
+                    :src="view_appliaction"
+                    alt="Application view" />
           </div>
         </div>
       </div>
@@ -70,7 +77,7 @@
 
 <script>
 import {
-    PencilAltIcon,
+    PencilAltIcon, SparklesIcon
 } from '@heroicons/vue/outline'
 import Guest from "@/Layouts/Guest";
 import Hero from "@/Components/Guest/Hero";
@@ -81,10 +88,12 @@ export default {
     components: {
         Hero,
         Guest,
-        PencilAltIcon
+        PencilAltIcon,
+        SparklesIcon
     },
     props: {
-        register_application: String
+        register_application: String,
+        view_appliaction: String
     }
 }
 </script>

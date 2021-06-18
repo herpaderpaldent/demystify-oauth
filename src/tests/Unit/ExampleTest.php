@@ -2,10 +2,14 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
 
 class ExampleTest extends TestCase
 {
+
     /**
      * A basic test example.
      *
