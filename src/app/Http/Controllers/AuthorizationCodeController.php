@@ -16,10 +16,19 @@ class AuthorizationCodeController
 {
     public function request(Request $request)
     {
+        $request->validate([
+            'client_id' => ['required', 'exists:clients,client_id'],
+            'response_type' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if($value !== 'code') {
+                        $fail('The '.$attribute.' is invalid and must be «code».');
+                    }
+                }
+            ]
+        ]);
 
         $client = Client::firstWhere('client_id', data_get($request, 'client_id'));
-
-        throw_if(is_null($client), new HttpClientException('unknown client_id'));
 
         return inertia('AuthorizeClient', [
             'client_name' => $client->name,
@@ -34,8 +43,8 @@ class AuthorizationCodeController
     {
         $validated_data = $request->validate([
             'client_id' => ['required', 'exists:clients,client_id'],
-            'state' => ['required', 'string'],
-            'scopes' => ['required', 'array']
+            'state' => ['string'],
+            'scopes' => ['array']
         ]);
 
         $client = Client::firstWhere('client_id', data_get($request, 'client_id'));
@@ -58,7 +67,7 @@ class AuthorizationCodeController
 
         broadcast(new AuthorizationGranted($client->client_id, array_merge(['method' => 'GET', 'url' => $redirect_url], $redirect_data)));
 
-        return redirect()->route('home');
+        return redirect()->to($redirect_url);
     }
 
     public function grant(Request $request)
