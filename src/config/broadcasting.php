@@ -37,11 +37,7 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                //'useTLS' => true,
-                'encrypted' => true,
-                'host' => 'websocket'/*'172.21.0.6'*/, // must be the websocket host
-                'port' => 6001,
-                'scheme' => 'http'
+                'useTLS' => true,
             ],
         ],
 

@@ -7,10 +7,11 @@ namespace App\Http\Controllers;
 use App\Events\AuthorizationGranted;
 use App\Models\Client;
 use App\Models\Token;
-use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class AuthorizationCodeController
 {
@@ -67,7 +68,7 @@ class AuthorizationCodeController
 
         broadcast(new AuthorizationGranted($client->client_id, array_merge(['method' => 'GET', 'url' => $redirect_url], $redirect_data)));
 
-        return redirect()->to($redirect_url);
+        return Inertia::location($redirect_url);
     }
 
     public function grant(Request $request)
@@ -75,6 +76,7 @@ class AuthorizationCodeController
         $validated_data = $request->validate([
             'client_id' => ['required', 'exists:clients,client_id'],
             'client_secret' => ['required', 'exists:clients,client_secret'],
+            'grant_type' => ['required', 'string', Rule::in(['authorization_code'])],
             'code' => ['required', 'string']
         ]);
 

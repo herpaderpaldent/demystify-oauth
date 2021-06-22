@@ -29,6 +29,7 @@ window.Pusher = require('pusher-js');
     forceTLS: true
 });*/
 
+/*
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'your-pusher-key',
@@ -36,4 +37,12 @@ window.Echo = new Echo({
     wsPort: 6001,
     forceTLS: false,
     disableStats: true,
+});
+*/
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    forceTLS: true
 });

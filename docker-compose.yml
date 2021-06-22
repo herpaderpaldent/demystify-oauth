@@ -76,19 +76,3 @@ services:
       - mariadb
     networks:
       - backend
-
-  ### websocket ################################################
-  websocket:
-    build: .docker/cron
-    restart: always
-    volumes:
-      - ${CODE}:/var/www
-    ports:
-      - 6001:6001
-    depends_on:
-      - app
-      - mariadb
-    environment:
-      CONTAINER_ROLE: websocket
-    networks:
-      - backend

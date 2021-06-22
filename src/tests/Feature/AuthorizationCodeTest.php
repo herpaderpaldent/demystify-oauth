@@ -69,9 +69,14 @@ class AuthorizationCodeTest extends TestCase
         $response = $this->actingAs($user)
             ->post(route('authorize.authorization-code'), [
                 'client_id' => $client->client_id
-            ])->assertRedirect();
+            ]);
 
-        $return_url = $response->headers->get('location');
+        $this->assertEquals(409, $response->status());
+
+        //dd($response->headers->get('x-inertia-location'));
+
+        $return_url = $response->headers->get('x-inertia-location');
+
         $url_arr = parse_url($return_url);
         $query = $url_arr['query'];
 
@@ -96,7 +101,8 @@ class AuthorizationCodeTest extends TestCase
         $response = $this->post('/api/authorization-code/token', [
             'client_id' => $client->client_id,
             'client_secret' => $client->client_secret,
-            'code' => $code
+            'code' => $code,
+            'grant_type' => 'authorization_code'
         ])->assertJson(fn(AssertableJson $json) => $json
             ->has('access_token')
             ->has('token_type')
