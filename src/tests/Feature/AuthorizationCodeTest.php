@@ -69,9 +69,14 @@ class AuthorizationCodeTest extends TestCase
         $response = $this->actingAs($user)
             ->post(route('authorize.authorization-code'), [
                 'client_id' => $client->client_id
-            ])->assertRedirect();
+            ]);
 
-        $return_url = $response->headers->get('location');
+        $this->assertEquals(409, $response->status());
+
+        //dd($response->headers->get('x-inertia-location'));
+
+        $return_url = $response->headers->get('x-inertia-location');
+
         $url_arr = parse_url($return_url);
         $query = $url_arr['query'];
 
