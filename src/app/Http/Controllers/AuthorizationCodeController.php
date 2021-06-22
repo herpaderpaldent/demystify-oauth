@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class AuthorizationCodeController
 {
@@ -67,7 +68,7 @@ class AuthorizationCodeController
 
         broadcast(new AuthorizationGranted($client->client_id, array_merge(['method' => 'GET', 'url' => $redirect_url], $redirect_data)));
 
-        return redirect()->to($redirect_url);
+        return Inertia::location($redirect_url);
     }
 
     public function grant(Request $request)
