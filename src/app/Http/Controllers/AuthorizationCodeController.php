@@ -7,10 +7,10 @@ namespace App\Http\Controllers;
 use App\Events\AuthorizationGranted;
 use App\Models\Client;
 use App\Models\Token;
-use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class AuthorizationCodeController
 {
@@ -75,6 +75,7 @@ class AuthorizationCodeController
         $validated_data = $request->validate([
             'client_id' => ['required', 'exists:clients,client_id'],
             'client_secret' => ['required', 'exists:clients,client_secret'],
+            'grant_type' => ['required', 'string', Rule::in(['authorization_code'])],
             'code' => ['required', 'string']
         ]);
 

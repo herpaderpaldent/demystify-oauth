@@ -96,7 +96,8 @@ class AuthorizationCodeTest extends TestCase
         $response = $this->post('/api/authorization-code/token', [
             'client_id' => $client->client_id,
             'client_secret' => $client->client_secret,
-            'code' => $code
+            'code' => $code,
+            'grant_type' => 'authorization_code'
         ])->assertJson(fn(AssertableJson $json) => $json
             ->has('access_token')
             ->has('token_type')
