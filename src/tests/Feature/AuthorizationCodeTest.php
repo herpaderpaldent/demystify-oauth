@@ -5,10 +5,12 @@ namespace Tests\Feature;
 
 
 use App\Models\Client;
+use App\Models\Token;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Inertia\Testing\Assert;
 use Tests\TestCase;
@@ -122,8 +124,54 @@ class AuthorizationCodeTest extends TestCase
         ])->assertOk()
             ->assertJson(fn(AssertableJson $json) => $json->where('name', $user->name)->etc());
 
+    }
 
+    /** @test */
+    public function oneCanRefreshAccessTokenWithRefreshToken()
+    {
+        $client = Client::factory()->create();
+        $user = User::factory()->create();
 
+        // create token
+        $token = Token::create([
+            'client_id' => (int) $client->id,
+            'user_id' => (int) $user->id,
+            'access_token' => base64_encode(Str::uuid()),
+            'refresh_token' => base64_encode(Str::uuid()),
+            'expires' => now()->subDay(),
+            'scopes' => json_encode([])
+        ]);
+
+        // make sure it is expired
+        $this->assertFalse($token->is_valid);
+
+        // refresh access token
+
+        $this->assertGuest();
+
+        $response = $this->post('/api/authorization-code/token', [
+            'client_id' => $client->client_id,
+            'client_secret' => $client->client_secret,
+            'refresh_token' => $token->refresh_token,
+            'grant_type' => 'refresh_token'
+        ])->assertJson(fn(AssertableJson $json) => $json
+            ->has('access_token')
+            ->has('token_type')
+            ->has('expires_in')
+            ->has('refresh_token')
+            ->has('scopes')
+        );
+
+        // finally let's try to use the access token to access the user endpoint
+
+        $access_token = data_get(json_decode($response->getContent()), 'access_token');
+
+        $this->assertGuest();
+
+        $response = $this->get('/api/user', [
+            'bearer' => $access_token
+        ])->assertOk()
+            ->assertJson(fn(AssertableJson $json) => $json->where('name', $user->name)->etc());
 
     }
 

@@ -29,4 +29,9 @@ class Token extends Model
     {
         return $this->expires->diffInSeconds(now());
     }
+
+    public function getIsValidAttribute() : bool
+    {
+        return $this->expires->isFuture();
+    }
 }
