@@ -28,7 +28,7 @@ class CheckAccessToken
 
         throw_if(is_null($token), new HttpClientException('invalid token'));
 
-        throw_if(!$token->expires_in > 0, new HttpClientException('access token expired'));
+        throw_if(!$token->is_valid, new HttpClientException('access token expired'));
 
         auth()->login($token->user);
 

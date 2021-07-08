@@ -1,12 +1,11 @@
 {
-    "name": "laravel/laravel",
+    "name": "herpaderpaldent/demystify-oauth",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Small demo application to demonstrate the flow of oAuth2.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
         "php": "^8.0",
-        "beyondcode/laravel-websockets": "^1.12",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
