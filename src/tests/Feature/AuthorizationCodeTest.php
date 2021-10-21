@@ -34,12 +34,7 @@ class AuthorizationCodeTest extends TestCase
             'callback_url' =>  $client->callback_url,
             'email' =>  $client->email,
             'description' =>  $client->description,
-        ])->assertInertia(function (Assert $page) use ($client) {
-                return $page
-                    ->component('Client/Details')
-                    ->has('client_id')
-                    ->has('client_secret');
-            });
+        ])->assertRedirect();
 
         $this->assertCount(1, Client::all());
 

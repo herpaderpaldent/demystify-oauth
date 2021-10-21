@@ -68,6 +68,7 @@ class AuthorizationCodeController
 
         $redirect_url = sprintf('%s?%s', $client->callback_url, http_build_query($redirect_data));
 
+        session()->put('code', $auth_code);
         broadcast(new AuthorizationGranted($client->client_id, array_merge(['method' => 'GET', 'url' => $redirect_url], $redirect_data)));
 
         return Inertia::location($redirect_url);
