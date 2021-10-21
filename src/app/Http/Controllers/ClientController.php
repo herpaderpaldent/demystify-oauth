@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class ClientController extends Controller
 {
-    public function create()
-    {
-        return inertia('Client/Registration');
-    }
 
     public function store(Request $request)
     {
@@ -31,10 +29,13 @@ class ClientController extends Controller
             'description' => data_get($data, 'description'),
         ]);
 
-        return inertia('Client/Details', [
+        session(['client' => [
             'client_id' => $client->client_id,
-            'client_secret' => $client->client_secret
+            'client_secret' => $client->client_secret],
+            'redirect_uri' => $client->callback_url
         ]);
+
+        return redirect()->back();
 
     }
 }
