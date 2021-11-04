@@ -22,23 +22,6 @@ class AuthorizationCodeTest extends TestCase
     private int $client_id;
     private string $client_secret;
 
-    /** @test */
-    public function oneCanCreateAClient() {
-
-        $client = Client::factory()->make();
-
-        $this->assertCount(0, Client::all());
-
-        $this->post(route('register.client'), [
-            'application_name' => $client->name,
-            'callback_url' =>  $client->callback_url,
-            'email' =>  $client->email,
-            'description' =>  $client->description,
-        ])->assertRedirect();
-
-        $this->assertCount(1, Client::all());
-
-    }
 
     /** @test */
     public function authorizationRequest() {

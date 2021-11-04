@@ -1,4 +1,5 @@
 <template>
+  <Head title="Authorization Code Flow" />
   <div class="rounded-lg py-16 bg-white overflow-hidden shadow">
     <div class="px-4 sm:px-6 lg:px-8">
       <div class="text-lg max-w-prose mx-auto">
@@ -61,10 +62,11 @@ import Step2 from "@/Components/Content/Step2";
 import Step3 from "@/Components/Content/Step3";
 import Step4 from "@/Components/Content/Step4";
 import Step5 from "@/Components/Content/Step5";
+import { Head } from '@inertiajs/inertia-vue3'
 
 export default {
-  name: "Welcome",
-  components: {Step5, Step4, Step3, Step2, Step1},
+  name: "AuthorizationCodeFlow",
+  components: {Step5, Step4, Step3, Step2, Step1, Head},
   layout: ConstrainedStickyColumnsLayout,
   props: {
     currentStep: {

@@ -101,7 +101,7 @@ const raw_steps = [
     { name: 'Login/Register User', description: 'Have a resource owner'},
     { name: 'Authorize Client', description: 'Authorize client request'},
     { name: 'Access resource', description: 'Access resource information as client'},
-    { name: 'Renew RefreshToken', description: 'Renew refresh token'},
+    { name: 'Renew Access Token', description: 'If access token is expired, use refresh token to generate a new one'},
 ]
 
 export default {
