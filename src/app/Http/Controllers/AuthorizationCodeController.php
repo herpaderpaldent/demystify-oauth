@@ -17,6 +17,20 @@ use Inertia\Inertia;
 
 class AuthorizationCodeController
 {
+
+    public function view()
+    {
+        $data = [
+            'client' => session('client'),
+            'user' => auth()->user(),
+            'code' => session('code')
+        ];
+
+        return Inertia::render('AuthorizationCodeFlow', array_merge($data, [
+            'currentStep' => collect($data)->filter()->count() + 1
+        ]));
+    }
+
     public function request(Request $request)
     {
         $request->validate([
@@ -104,6 +118,8 @@ class AuthorizationCodeController
     private function issueToken(array $validated_data) : string
     {
         $auth_code_data = Cache::pull(data_get($validated_data, 'code'));
+
+        throw_if(is_null($auth_code_data), new Exception('authorization_code was not used within one minute and invalidated'));
 
         $token = Token::create([
             'client_id' => data_get($auth_code_data, 'client_id'),

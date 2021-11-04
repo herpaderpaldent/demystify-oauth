@@ -1,7 +1,7 @@
 <template>
   <div class="mt-6 prose prose-indigo prose-lg text-gray-500 mx-auto">
     <h2>Login/Register User</h2>
-    <p>Next up, we need to register  a user who is able to authorize a client access to its resources: </p>
+    <p>Next up, we need to register a user who is able to authorize a client access to its resources: </p>
     <div class="flex">
       <div class="mr-4 flex-shrink-0">
         <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100">
@@ -17,6 +17,7 @@
         </p>
       </div>
     </div>
+    <p>Please note, that you are not obliged to use a valid mail address.</p>
   </div>
 </template>
 

@@ -29,6 +29,8 @@ Route::prefix('client')
 Route::prefix('authorization-code')
     ->group(function () {
 
+        Route::get('', [AuthorizationCodeController::class, 'view'])->name('authorizationCodeFlow');
+
         Route::middleware('auth')->group(function () {
             Route::get('/auth', [AuthorizationCodeController::class, 'request']);
             Route::post('/auth', [AuthorizationCodeController::class, 'authorize'])

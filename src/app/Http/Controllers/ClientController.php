@@ -17,7 +17,7 @@ class ClientController extends Controller
             'application_name' => ['required', 'string'],
             'callback_url' =>  ['required', 'string'],
             'email' =>  ['required', 'string'],
-            'description' =>  ['required', 'string'],
+            'description' =>  ['required', 'string', 'max:500'],
         ]);
 
         $client = Client::create([

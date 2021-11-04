@@ -34,6 +34,7 @@ grant_type=authorization_code&client_id={{ client_id }}&client_secret={{ client_
         </p>
       </div>
     </div>
+    <hr>
     <h3>Access resource</h3>
     <p>Using the access token as <code>bearer</code> we are now able to access the resource, authenticated as resource owner providing the access token</p>
     <div class="flex">
@@ -48,16 +49,28 @@ grant_type=authorization_code&client_id={{ client_id }}&client_secret={{ client_
         </h4>
         <p class="mt-1">
           Try getting the user information from the api: <code>GET {{ base_url }}/api/user</code> and the access token as <code>bearer</code> <br>
-          <button
-            type="button"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            @click="next"
-          >
-            Click here for the next step
-          </button>
         </p>
       </div>
     </div>
+    <p>The request should be something like this:</p>
+    <pre>
+      <code class="language-curl">
+<b>GET</b> /api/user HTTP/1.1
+bearer: <b>YOUR ACCESS TOKEN</b>
+Accept: */*
+Host: {{ host }}
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+      </code>
+    </pre>
+    <p>as a result you should get a <code>JSON</code> Response containing the user-model including the mail you entered and <code>user_id</code></p>
+    <button
+      type="button"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      @click="next"
+    >
+      Click here for the next step
+    </button>
   </div>
 </template>
 

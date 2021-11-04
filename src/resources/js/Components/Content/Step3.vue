@@ -51,14 +51,23 @@
             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             @click="popup"
           >
-            Button text
+            Ask user for authorization
           </button>
         </p>
       </div>
     </div>
-    <h3>Redirect Response</h3>
+
+    <hr>
+    <h3>
+      Redirect Response
+    </h3>
+    <p>
+      Please note, the received code is only valid for a limited period of time, hence it is very likely that you need to generate a second one
+      Below the most recent response from the authorization server is highlighted by the purple background.
+    </p>
 
     <Authentication @request-received="processCode" />
+    <hr>
   </div>
 </template>
 
