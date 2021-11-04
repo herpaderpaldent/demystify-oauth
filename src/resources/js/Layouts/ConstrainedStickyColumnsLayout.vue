@@ -1,19 +1,3 @@
-<!--
-  This example requires Tailwind CSS v2.0+
-
-  This example requires some changes to your config:
-
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
 <template>
   <div class="min-h-screen bg-gray-100">
     <!--    <Popover
@@ -189,6 +173,7 @@
         </PopoverPanel>
       </header>
     </Popover>-->
+    <Header />
 
     <div class="py-6">
       <div class="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
@@ -222,6 +207,7 @@ import { SearchIcon } from '@heroicons/vue/solid'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import Sidebar from "@/Components/Sidebar";
 import RightSidebar from "@/Components/RightSidebar";
+import Header from "@/Layouts/Header";
 
 const user = {
     name: 'Chelsea Hagon',
@@ -247,6 +233,7 @@ const userNavigation = [
 export default {
     name: "ConstrainedStickyColumnsLayout",
     components: {
+      Header,
         RightSidebar,
         Sidebar,
         Menu,

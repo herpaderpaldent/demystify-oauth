@@ -6,12 +6,11 @@ require('./bootstrap');
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
-import {ZiggyVue} from "ziggy/vue";
-import {Ziggy} from "@/ziggy";
 
 const el = document.getElementById('app');
 
 const app = createInertiaApp({
+    title: title => `${title} - Demystify oAuth `,
     resolve: (name) => require(`./Pages/${name}`),
     setup({ el, app, props, plugin }) {
         createApp({ render: () => h(app, props) })

@@ -9,14 +9,8 @@ class HomeController extends Controller
     public function __invoke()
     {
 
-        $data = [
-            'client' => session('client'),
-            'user' => auth()->user(),
-            'code' => session('code')
-        ];
-
-        return Inertia::render('Welcome', array_merge($data, [
-            'currentStep' => collect($data)->filter()->count() + 1
-        ]));
+        return Inertia::render('Home', [
+            'exampleImage' => asset('/images/authorizationCodeFlowExample.png')
+        ]);
     }
 }

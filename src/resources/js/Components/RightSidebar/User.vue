@@ -147,7 +147,7 @@
           </DialogTitle>
           <div class="mt-2">
             <p class="text-sm text-gray-500">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.
+              We need a user to retrieve information from. Maybe use a catchy name that you recognize late f.e. Rick Astley.
             </p>
           </div>
         </div>

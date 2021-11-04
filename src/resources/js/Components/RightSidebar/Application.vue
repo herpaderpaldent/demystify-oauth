@@ -61,9 +61,23 @@
           </DialogTitle>
           <div class="mt-2">
             <p class="text-sm text-gray-500">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.
+              This will be the roughly simulate you registering an application and receive client_id and secret. Remember: you can leave the return url as is if you don't plan to create an actual application.
             </p>
           </div>
+        </div>
+        <div v-if="Object.keys(form.errors).length > 0">
+          <div class="font-medium text-red-600">
+            Whoops! Something went wrong.
+          </div>
+
+          <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+            <li
+              v-for="(error, key) in form.errors"
+              :key="key"
+            >
+              {{ error }}
+            </li>
+          </ul>
         </div>
         <form
           method="POST"
@@ -126,7 +140,7 @@
               <label
                 for="message"
                 class="block text-sm font-medium text-gray-900"
-              >Message</label>
+              >Cescription</label>
               <span
                 id="message-max"
                 class="text-sm text-gray-500"
@@ -138,6 +152,7 @@
                 v-model="form.description"
                 name="message"
                 rows="4"
+                placeholder="Please describe your application and how to contact you."
                 class="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md"
                 aria-describedby="message-max"
               />
@@ -178,7 +193,7 @@ export default {
       application_name: 'name',
       callback_url: 'callback.url',
       email: 'user@test.ch',
-      description: 'some text'
+      description: null
     })
 
     const client = computed(() => usePage().props.value.client)
