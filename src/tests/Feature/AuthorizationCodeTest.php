@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Inertia\Testing\Assert;
@@ -22,6 +23,59 @@ class AuthorizationCodeTest extends TestCase
     private int $client_id;
     private string $client_secret;
 
+    /** @test */
+    public function client_create_view()
+    {
+        $this->assertFalse(Session::has('shouldShowDetailsView'));
+
+        $this->get('/client/create')
+            ->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Client/Registration')
+            );
+
+        $this->assertTrue(Session::has('shouldShowDetailsView'));
+    }
+
+    /** @test */
+    public function create_client_create_via_details_view()
+    {
+       $this->session(['shouldShowDetailsView' => true]);
+
+        $this->assertTrue(Session::has('shouldShowDetailsView'));
+
+        $mock = Client::factory()->make();
+
+        $this->post(route('create.client'), [
+            'application_name' => $mock->name,
+            'callback_url' =>  $mock->callback_url,
+            'email' =>  $mock->email,
+            'description' =>  $mock->description,
+        ])->assertStatus(200)
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Client/Details')
+            );
+
+        $this->assertFalse(Session::has('shouldShowDetailsView'));
+
+    }
+
+    /** @test */
+    public function create_client_create_not_via_details_view()
+    {
+
+        $this->assertFalse(Session::has('shouldShowDetailsView'));
+
+        $mock = Client::factory()->make();
+
+        $this->post(route('create.client'), [
+            'application_name' => $mock->name,
+            'callback_url' =>  $mock->callback_url,
+            'email' =>  $mock->email,
+            'description' =>  $mock->description,
+        ])->assertStatus(302);
+
+    }
 
     /** @test */
     public function authorizationRequest() {

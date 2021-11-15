@@ -23,6 +23,7 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::prefix('client')
     ->group(function () {
+        Route::get('/create', [ClientController::class, 'create']);
         Route::post('/create', [ClientController::class, 'store'])->name('create.client');
     });
 
