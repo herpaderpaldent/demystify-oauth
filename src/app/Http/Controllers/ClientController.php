@@ -11,6 +11,13 @@ use Inertia\Inertia;
 class ClientController extends Controller
 {
 
+    public function create()
+    {
+        session(['shouldShowDetailsView' => true]);
+
+        return inertia('Client/Registration');
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -28,6 +35,13 @@ class ClientController extends Controller
             'email' => data_get($data, 'email'),
             'description' => data_get($data, 'description'),
         ]);
+
+        if(session()->pull('shouldShowDetailsView')) {
+            return inertia('Client/Details', [
+                'client_id' => $client->client_id,
+                'client_secret' => $client->client_secret
+            ]);
+        }
 
         session(['client' => [
             'client_id' => $client->client_id,
