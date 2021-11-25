@@ -29,6 +29,15 @@
         user-agent.
       </p>
     </blockquote>
+    <pre>
+      <code class="language-curl">
+<b>GET</b> {{ uri.pathname + uri.search }} HTTP/1.1
+Accept: */*
+Host: {{ uri.host }}
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+      </code>
+    </pre>
     <p>
       Taking not of the following sentence: <code>the [...] server directs the user-agent to the provided client redirection URI</code>
       this would require a valid <code>redirect_uri</code>. This demo application actually returns the authorization code to the URI.
@@ -109,8 +118,7 @@ emits: ['authorization-code'],
       url.searchParams.append('redirect_uri', usePage().props.value.client.redirect_uri)
       url.searchParams.append('state', state)
 
-      return url.href
-
+      return url
     })
 
     const windowRef = ref()
@@ -118,7 +126,7 @@ emits: ['authorization-code'],
     const popup =  () => {
       let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=600,height=300`;
 
-      windowRef.value = open(uri.value, 'Authorization Request', params);
+      windowRef.value = open(uri.value.href, 'Authorization Request', params);
     }
 
     const processCode = () => {
@@ -137,7 +145,7 @@ emits: ['authorization-code'],
     return {
       popup,
       processCode,
-      uri
+      uri,
     }
   }
 }
