@@ -57,7 +57,7 @@ grant_type=authorization_code&client_id={{ client_id }}&client_secret={{ client_
       <code class="language-curl">
 <b>GET</b> /api/user HTTP/1.1
 bearer: <b>YOUR ACCESS TOKEN</b>
-Accept: */*
+Accept: application/json
 Host: {{ host }}
 Accept-Encoding: gzip, deflate, br
 Connection: keep-alive

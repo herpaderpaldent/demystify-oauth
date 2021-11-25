@@ -29,11 +29,12 @@
     <pre>
       <code class="language-curl">
 <b>POST</b> /api/authorization-code/token HTTP/1.1
+Accept: application/json
 Host: {{ host }}
 Content-Type: application/<b>x-www-form-urlencoded</b>
 Content-Length: 152
 
-grant_type=refresh_token&refresh_token=<b>YOURTOKEN</b>
+grant_type=refresh_token&refresh_token=<b>YOURTOKEN</b>&client_id={{ client.client_id }}&client_secret={{ client.client_secret }}
       </code>
     </pre>
     <div class="flex">
@@ -65,7 +66,7 @@ grant_type=refresh_token&refresh_token=<b>YOURTOKEN</b>
 
 <script>
 import { BeakerIcon, CheckIcon } from '@heroicons/vue/outline'
-import { Link } from '@inertiajs/inertia-vue3'
+import {Link, usePage} from '@inertiajs/inertia-vue3'
 import route from 'ziggy'
 
 export default {
@@ -76,9 +77,13 @@ export default {
     Link
   },
   setup() {
+
+    const client = usePage().props.value.client
+
     return {
       host: window.location.host,
-      logout: route('logout')
+      logout: route('logout'),
+      client
     }
   }
 }
