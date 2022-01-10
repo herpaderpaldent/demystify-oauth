@@ -15,19 +15,28 @@
         <h4 class="text-lg font-bold">
           Action
         </h4>
-        <p class="mt-1">
+        <p class="mt-1 xl:hidden">
+          To register client, press the button bellow and follow the instructions.
+        </p>
+        <p class="mt-1 hidden xl:block">
           To register client, press the button in the right column and follow the instructions.
         </p>
       </div>
+    </div>
+
+    <div class="xl:hidden">
+      <Application />
     </div>
   </div>
 </template>
 
 <script>
 import { BeakerIcon } from '@heroicons/vue/outline'
+import Application from "@/Components/RightSidebar/Application";
 export default {
   name: "Step1",
   components: {
+    Application,
     BeakerIcon
   }
 }
